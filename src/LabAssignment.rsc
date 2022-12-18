@@ -54,7 +54,7 @@ public int countIf(Statement d) {
 public int countCommentLines(list[str] file){	
   n = 0;
   for(f <- file)
-    if(/\*(.|[\r\n])*?\*/ := f)  
+    if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/ := f)  
     //Welke regels willen we filteren?
       n +=1;
   return n;
