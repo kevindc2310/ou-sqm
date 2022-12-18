@@ -116,6 +116,7 @@ public void calculateUnitSize(){
     int numModerate = 0;
     int numHigh = 0;
     int numVeryHigh = 0;
+    //We berekenen nu het aantal lines source code. 
     for (<a, b> <- sort(toList(regelsWithoutComments))){
     	if (b <= simple)
     	{
