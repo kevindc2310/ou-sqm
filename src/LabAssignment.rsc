@@ -52,15 +52,15 @@ public int countIf(Statement d) {
 }
 
 public list[str] removeCommentsFromFile(list[str] file){
-  list[str] fileWithoutWhiteLines = [];
+  list[str] fileWithoutCommentLines = [];
   for(int i <- [0..(size(file) - 1)]){
       if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := file[i]){
           print("");
        } else {
-       	  fileWithoutWhiteLines += file[i] ;       	 
+       	  fileWithoutCommentLines += file[i] ;       	 
        }       
       } 
-      return fileWithoutWhiteLines;
+      return fileWithoutCommentLines;
 }
 
 public void printMethods(loc project) {
