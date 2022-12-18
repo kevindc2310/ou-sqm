@@ -64,6 +64,24 @@ public list[str] removeCommentsFromFile(list[str] file){
       return fileWithoutCommentLines;
 }
 
+public list[str] removeWhiteLinesFromFile(list[str] file){
+  list[str] fileWithoutWhiteLines = [];
+  for(int i <- [0..(size(file) - 1)]){
+      if(/^[ \t\r\n]*$/ := file[i]){
+          print("White line\n");
+       } else {
+       	  fileWithoutWhiteLines += file[i] ;       	 
+       }       
+      } 
+      return fileWithoutWhiteLines;
+}
+
+public list[str] removeCommentsAndWhiteLinesFromFile(list[str] file){
+	list[str] fileWithout = removeWhiteLinesFromFile(file);
+	fileWithout = removeCommentsFromFile(fileWithout);
+	return fileWithout;
+}
+
 public void printMethods(loc project) {
 	M3 model = createM3FromEclipseProject(project);
 	for (loc l <- methods(model)) {
@@ -108,7 +126,7 @@ public void calculateUnitSize(){
 	int moderate = 30;
 	int high = 60;
 	map[loc, int] regels = ( a:size(readFileLines(a)) | a <- methods(model) );
-	map[loc, int] regelsWithoutComments =( a:size(removeCommentsFromFile(readFileLines(a))) | a <- methods(model) );
+	map[loc, int] regelsWithoutWhiteOrComment =( a:size(removeCommentsAndWhiteLinesFromFile(readFileLines(a))) | a <- methods(model) );
 	//println(sort(toList(regels), aflopend));
 	//for (<a, b> <- sort(toList(regels), aflopend))
       //println("<a.file>: <b> regels");
@@ -117,7 +135,7 @@ public void calculateUnitSize(){
     int numHigh = 0;
     int numVeryHigh = 0;
     //We berekenen nu het aantal lines source code. 
-    for (<a, b> <- sort(toList(regelsWithoutComments))){
+    for (<a, b> <- sort(toList(regelsWithoutWhiteOrComment))){
     	if (b <= simple)
     	{
     		numSimple += 1;
