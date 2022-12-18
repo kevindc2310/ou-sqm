@@ -46,6 +46,15 @@ public int countIf(Statement d) {
    return count;
 }
 
+public int countCommentLines(list[str] file){	
+  n = 0;
+  for(f <- file)
+    if(/\*(.|[\r\n])*?\*/ := f)  
+    //Welke regels willen we filteren?
+      n +=1;
+  return n;
+}
+
 public void printMethods(loc project) {
 	M3 model = createM3FromEclipseProject(project);
 	for (loc l <- methods(model)) {
@@ -77,6 +86,12 @@ public void runAnalysis(){
     int numHigh = 0;
     int numVeryHigh = 0;
     for (<a, b> <- sort(toList(regels))){
+    	if(countCommentLines(readFileLines(a))>=1){
+    		println("old +<b>");
+    		b=b-countCommentLines(readFileLines(a));
+    		println("new +<b>");
+    		println("<a>: <b>");
+    	}
     	if (b <= simple)
     	{
     		numSimple += 1;
