@@ -51,6 +51,18 @@ public int countIf(Statement d) {
    return count;
 }
 
+public list[str] removeCommentsFromFile(list[str] file){
+  list[str] fileWithoutWhiteLines = [];
+  for(int i <- [0..(size(file) - 1)]){
+      if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := file[i]){
+          print("");
+       } else {
+       	  fileWithoutWhiteLines += file[i] ;       	 
+       }       
+      } 
+      return fileWithoutWhiteLines;
+}
+
 public void printMethods(loc project) {
 	M3 model = createM3FromEclipseProject(project);
 	for (loc l <- methods(model)) {
@@ -95,6 +107,7 @@ public void calculateUnitSize(){
 	int moderate = 30;
 	int high = 60;
 	map[loc, int] regels = ( a:size(readFileLines(a)) | a <- methods(model) );
+	map[loc, int] regelsWithoutComments =( a:size(removeCommentsFromFile(readFileLines(a))) | a <- methods(model) );
 	//println(sort(toList(regels), aflopend));
 	//for (<a, b> <- sort(toList(regels), aflopend))
       //println("<a.file>: <b> regels");
@@ -102,7 +115,7 @@ public void calculateUnitSize(){
     int numModerate = 0;
     int numHigh = 0;
     int numVeryHigh = 0;
-    for (<a, b> <- sort(toList(regels))){
+    for (<a, b> <- sort(toList(regelsWithoutComments))){
     	if (b <= simple)
     	{
     		numSimple += 1;
