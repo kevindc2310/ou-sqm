@@ -139,7 +139,8 @@ public int countIf(Statement d) {
 }
 
 public void exercise9() {
-   loc project = |project://Jabberpoint-le3|;
+   //loc project = |project://Jabberpoint-le3|;
+   loc project = |project://smallsql0.21_src.zip_expanded|;
    set[loc] bestanden = javaFiles(project);
    println("(9a)");
    println(size(bestanden));

@@ -16,6 +16,8 @@ import util::Math;
 
 loc project = |project://smallsql0.21_src.zip_expanded|;
 
+// Helper functions
+
 public set[loc] javaFiles(loc project) {
    Resource r = getProject(project);
    return { a | /file(a) <- r, a.extension == "java" };
@@ -26,10 +28,13 @@ public lrel[str, Statement] methodenAST(loc project) {
    
    set[Declaration] decls = createAstsFromFiles(bestanden, false);
    lrel[str, Statement] result = [];
+   nonMethod = 0;
    visit (decls) {
       case \method(_, name, _, _, impl): result += <name, impl>;
       case \constructor(name, _, _, impl): result += <name, impl>;
+      default: nonMethod += 1;
    }
+   println(nonMethod);
    return(result);
 }
 
@@ -54,9 +59,30 @@ public void printMethods(loc project) {
 	}
 }
 
-public void runAnalysis(){
-	println("SmallSQL");
-	println("----");
+int calcCC(Statement impl) {
+    int result = 1;
+    visit (impl) {
+        case \if(_,_) : result += 1;
+        case \if(_,_,_) : result += 1;
+        case \case(_) : result += 1;
+        case \do(_,_) : result += 1;
+        case \while(_,_) : result += 1;
+        case \for(_,_,_) : result += 1;
+        case \for(_,_,_,_) : result += 1;
+        case \foreach(_,_,_) : result += 1;
+        case \catch(_,_): result += 1;
+        case \conditional(_,_,_): result += 1;
+        case \infix(_,"&&",_) : result += 1;
+        case \infix(_,"||",_) : result += 1;
+    }
+    return result;
+}
+
+// End Helper functions
+
+// Calculation functions
+
+public void calculateUnitSize(){
 	set[loc] bestanden = javaFiles(project);
 	println("Aantal java files:");
 	println(size(bestanden));
@@ -101,5 +127,74 @@ public void runAnalysis(){
     println(" * moderate: <round(toReal(numModerate)/toReal(numberOfMethods)*100)>%");
     println(" * high: <round(toReal(numHigh)/toReal(numberOfMethods)*100)>%");
     println(" * very high: <round(toReal(numVeryHigh)/toReal(numberOfMethods)*100)>%");
+
+}
+
+public void calculateCc(){
+    allMethods = methodenAST(project);
+    
+    numberOfMethods2 = size(allMethods);
+	println("Aantal methoden2:");
+	println(numberOfMethods2);
+    cc = 0;
+    
+    result = sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend);
+    
+    // threshold waarden volgens sig
+	int simpleCC = 10;
+	int moderateCC = 20;
+	int highCC = 50;
+	
+	int numSimpleCC = 0;
+    int numModerateCC = 0;
+    int numHighCC = 0;
+    int numVeryHighCC = 0;
+    
+    
+    for (<a, b> <- sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend)){
+    	if (b <= simpleCC)
+    	{
+    		numSimpleCC += 1;
+    		continue;
+    	}
+    	if (b <= moderateCC)
+    	{
+    		numModerateCC += 1;
+    		continue;
+    	}
+    	if (b <= highCC)
+    	{
+    		numHighCC += 1;
+    		continue;
+    	}
+    	numVeryHighCC += 1;
+    }
+    
+    println("CC:");
+    println(" * simple: <numSimpleCC>");
+    println(" * moderate: <numModerateCC>");
+    println(" * high: <numHighCC>");
+    println(" * very high: <numVeryHighCC>");
+    
+    
+    //for (<a, b> <- allMethods){
+    //	cc += calcCC(b);
+    //}
+    
+    //println(cc);
+}
+
+
+
+public void runAnalysis(){
+
+	println("SmallSQL");
+	//println("HyperSQL");
+	println("----");
+	
+    calculateUnitSize();
+    calculateCc();
+    
+
 }
 
