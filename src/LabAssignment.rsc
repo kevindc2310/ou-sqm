@@ -51,6 +51,7 @@ public int countIf(Statement d) {
    return count;
 }
 
+//Moet nog aangepast worden voor een aantal situaties. Lijkt te werken. 
 public list[str] removeCommentsFromFile(list[str] file){
   list[str] fileWithoutCommentLines = [];
   for(int i <- [0..(size(file) - 1)]){
