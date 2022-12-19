@@ -22,7 +22,6 @@ public set[loc] javaFiles(loc project) {
    Resource r = getProject(project);
    return { a | /file(a) <- r, a.extension == "java" };
 }
-
 public lrel[str, Statement] methodenAST(loc project) {
    set[loc] bestanden = javaFiles(project);
    
@@ -30,6 +29,7 @@ public lrel[str, Statement] methodenAST(loc project) {
    lrel[str, Statement] result = [];
    nonMethod = 0;
    visit (decls) {
+      case \initializer(impl): result += <"initializer", impl>;
       case \method(_, name, _, _, impl): result += <name, impl>;
       case \constructor(name, _, _, impl): result += <name, impl>;
       default: nonMethod += 1;
@@ -37,11 +37,9 @@ public lrel[str, Statement] methodenAST(loc project) {
    println(nonMethod);
    return(result);
 }
-
 public bool aflopend(tuple[&a, num] x, tuple[&a, num] y) {
    return x[1] > y[1];
 } 
-
 public int countIf(Statement d) {
    int count = 0;
    visit(d) {
@@ -50,16 +48,41 @@ public int countIf(Statement d) {
    } 
    return count;
 }
-
-public int countCommentLines(list[str] file){	
-  n = 0;
-  for(f <- file)
-    if(/\*(.|[\r\n])*?\*/ := f)  
-    //Welke regels willen we filteren?
-      n +=1;
-  return n;
+//Moet nog aangepast worden voor een aantal situaties. Lijkt te werken. 
+public list[str] removeCommentsFromFile(list[str] file){
+  list[str] fileWithoutCommentLines = [];
+  for(int i <- [0..(size(file) - 1)]){
+      if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := file[i]){
+          print("");
+       } else {
+       	  fileWithoutCommentLines += file[i] ;       	 
+       }       
+      } 
+      return fileWithoutCommentLines;
 }
+public list[str] removeWhiteLinesFromFile(list[str] file){
+  list[str] fileWithoutWhiteLines = [];
+  for(int i <- [0..(size(file) - 1)]){
+      if(/^[ \t\r\n]*$/ := file[i]){
+          print("White line\n");
+       } else {
+       	  fileWithoutWhiteLines += file[i] ;       	 
+       }       
+      } 
+      return fileWithoutWhiteLines;
+}
+public list[str] removeCommentsAndWhiteLinesFromFile(list[str] file){
+	if(size(file) <= 1) return file;
 
+	list[str] fileWithout = removeWhiteLinesFromFile(file);
+	fileWithout = removeCommentsFromFile(fileWithout);
+	/*if(file != fileWithout){
+		writeFileLines(|project://MyRascal/src/comments.txt|, file);
+		writeFileLines(|project://MyRascal/src/nocomments.txt|, fileWithout);
+		
+	}*/
+	return fileWithout;
+}
 public void printMethods(loc project) {
 	M3 model = createM3FromEclipseProject(project);
 	for (loc l <- methods(model)) {
@@ -67,7 +90,6 @@ public void printMethods(loc project) {
 		println("=== <l> ===\n<s>");
 	}
 }
-
 int calcCC(Statement impl) {
     int result = 1;
     visit (impl) {
@@ -86,11 +108,8 @@ int calcCC(Statement impl) {
     }
     return result;
 }
-
 // End Helper functions
-
 // Calculation functions
-
 public void calculateUnitSize(){
 	set[loc] bestanden = javaFiles(project);
 	println("Aantal java files:");
@@ -104,6 +123,7 @@ public void calculateUnitSize(){
 	int moderate = 30;
 	int high = 60;
 	map[loc, int] regels = ( a:size(readFileLines(a)) | a <- methods(model) );
+	map[loc, int] regelsWithoutWhiteOrComment =( a:size(removeCommentsAndWhiteLinesFromFile(readFileLines(a))) | a <- methods(model) );
 	//println(sort(toList(regels), aflopend));
 	//for (<a, b> <- sort(toList(regels), aflopend))
       //println("<a.file>: <b> regels");
@@ -111,13 +131,8 @@ public void calculateUnitSize(){
     int numModerate = 0;
     int numHigh = 0;
     int numVeryHigh = 0;
-    for (<a, b> <- sort(toList(regels))){
-    	if(countCommentLines(readFileLines(a))>=1){
-    		println("old +<b>");
-    		b=b-countCommentLines(readFileLines(a));
-    		println("new +<b>");
-    		println("<a>: <b>");
-    	}
+    //We berekenen nu het aantal lines source code. 
+    for (<a, b> <- sort(toList(regelsWithoutWhiteOrComment))){
     	if (b <= simple)
     	{
     		numSimple += 1;
@@ -142,9 +157,7 @@ public void calculateUnitSize(){
     println(" * moderate: <round(toReal(numModerate)/toReal(numberOfMethods)*100)>%");
     println(" * high: <round(toReal(numHigh)/toReal(numberOfMethods)*100)>%");
     println(" * very high: <round(toReal(numVeryHigh)/toReal(numberOfMethods)*100)>%");
-
 }
-
 public void calculateCc(){
     allMethods = methodenAST(project);
     
@@ -198,11 +211,7 @@ public void calculateCc(){
     
     //println(cc);
 }
-
-
-
 public void runAnalysis(){
-
 	println("SmallSQL");
 	//println("HyperSQL");
 	println("----");
@@ -210,6 +219,4 @@ public void runAnalysis(){
     calculateUnitSize();
     calculateCc();
     
-
 }
-
