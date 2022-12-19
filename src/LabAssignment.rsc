@@ -48,23 +48,28 @@ public int countIf(Statement d) {
    } 
    return count;
 }
-/ 
+ 
 public list[str] removeCommentsFromMethod(list[str] method){
   list[str] methodWithoutCommentLines = [];
-  for(int i <- [0..(size(method) - 1)]){
+  for(int i <- [0..(size(method) )]){
       if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := method[i]){
-          print("");
+    	if(/<x: .*><y: .*\/\/.*>/ := method[i]){
+      	 method[i]=x;
+      	 methodWithoutCommentLines += method[i] ; 
+  	 	}      
+        print("");
        } else {
        	  methodWithoutCommentLines += method[i] ;       	 
        }       
       } 
-      return methodWithoutCommentLines;
+     return methodWithoutCommentLines;
 }
+
 public list[str] removeWhiteLinesFromMethod(list[str] method){
   list[str] methodWithoutWhiteLines = [];
-  for(int i <- [0..(size(method) - 1)]){
+  for(int i <- [0..(size(method) )]){
       if(/^[ \t\r\n]*$/ := method[i]){
-          print("White line\n");
+          print("");
        } else {
        	  methodWithoutWhiteLines += method[i] ;       	 
        }       
@@ -72,15 +77,15 @@ public list[str] removeWhiteLinesFromMethod(list[str] method){
       return methodWithoutWhiteLines;
 }
 public list[str] removeCommentsAndWhiteLinesFromMethod(list[str] method){
-	if(size(method) <= 1) return method;
-
-	list[str] methodWithout = removeWhiteLinesFromMethod(method);
-	methodWithout = removeCommentsFromMethod(methodWithout);
+	if(size(method) <= 1) return method;	
+	list[str] methodWithout = removeCommentsFromMethod(method);
+	methodWithout = removeWhiteLinesFromMethod(methodWithout);
 	/*if(method != methodWithout){
 		writeFileLines(|project://MyRascal/src/comments.txt|, file);
 		writeFileLines(|project://MyRascal/src/nocomments.txt|, fileWithout);
 		
 	}*/
+	 //println(size(methodWithout));
 	return methodWithout;
 }
 
