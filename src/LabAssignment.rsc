@@ -227,20 +227,13 @@ public void calculateDuplication(){
 				codeLines += fileLines[n];
 			while(size(codeLines) < 6);
 			
+			// omzetten naar een md5 hash, makkelijker leesvaar als key en neemt minder geheugen in beslag
 			hashValue = md5Hash(codeLines);
 			
 			if(hashValue in duplicationMap){
 				duplicationMap[hashValue] += 1;
 				duplicateBlocks += 1;
-				if(duplicationMap[hashValue] > 10)
-				{
-					println(codeLines);
-					println("");
-					println("");
-					println("");
-					println("");
-					println("");
-				}
+			
 			}
 			else{
 				duplicationMap[hashValue] = 0;
@@ -257,8 +250,8 @@ public void runAnalysis(){
 	//println("HyperSQL");
 	println("----");
 	
-    //calculateUnitSize();
-    //calculateCc();
+    calculateUnitSize();
+    calculateCc();
     calculateDuplication();
 }
 
