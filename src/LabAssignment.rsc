@@ -24,6 +24,7 @@ public set[loc] javaFiles(loc project) {
    Resource r = getProject(project);
    return { a | /file(a) <- r, a.extension == "java" };
 }
+
 public lrel[str, Statement] methodenAST(loc project) {
    set[loc] bestanden = javaFiles(project);
    
@@ -39,9 +40,11 @@ public lrel[str, Statement] methodenAST(loc project) {
    //println(nonMethod);
    return(result);
 }
+
 public bool aflopend(tuple[&a, num] x, tuple[&a, num] y) {
    return x[1] > y[1];
 } 
+
 public int countIf(Statement d) {
    int count = 0;
    visit(d) {
@@ -50,44 +53,48 @@ public int countIf(Statement d) {
    } 
    return count;
 }
+
 public list[str] removeCommentsFromMethod(list[str] method){
   list[str] methodWithoutCommentLines = [];
-  for(int i <- [0..(size(method) - 1)]){
+  for(int i <- [0..(size(method) )]){
       if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := method[i]){
-          //print("");
-          continue;
+    	if(/<x: .*><y: .*\/\/.*>/ := method[i]){
+      	 method[i]=x;
+      	 methodWithoutCommentLines += method[i] ; 
+  	 	}      
+        print("");
        } else {
        	  methodWithoutCommentLines += method[i] ;       	 
        }       
       } 
-      return methodWithoutCommentLines;
+     return methodWithoutCommentLines;
 }
+
 public list[str] removeWhiteLinesFromMethod(list[str] method){
   list[str] methodWithoutWhiteLines = [];
-  for(int i <- [0..(size(method) - 1)]){
+  for(int i <- [0..(size(method) )]){
       if(/^[ \t\r\n]*$/ := method[i]){
-          //println("White line");
-          continue;
+          print("");
        } else {
        	  methodWithoutWhiteLines += method[i] ;       	 
        }       
       } 
       return methodWithoutWhiteLines;
 }
-public list[str] removeCommentsAndWhiteLinesFromMethod(list[str] method){
-	
-	
-	if(size(method) <= 1) return method;
 
-	list[str] methodWithout = removeWhiteLinesFromMethod(method);
-	methodWithout = removeCommentsFromMethod(methodWithout);
+public list[str] removeCommentsAndWhiteLinesFromMethod(list[str] method){
+	if(size(method) <= 1) return method;	
+	list[str] methodWithout = removeCommentsFromMethod(method);
+	methodWithout = removeWhiteLinesFromMethod(methodWithout);
 	/*if(method != methodWithout){
 		writeFileLines(|project://MyRascal/src/comments.txt|, file);
 		writeFileLines(|project://MyRascal/src/nocomments.txt|, fileWithout);
 		
 	}*/
+	 //println(size(methodWithout));
 	return methodWithout;
 }
+
 public list[str] removeImportOrPackagelLine(list[str] text){
 	list[str] result = [];
 	for(str line <- text){
@@ -103,6 +110,7 @@ public void printMethods(loc project) {
 		println("=== <l> ===\n<s>");
 	}
 }
+
 int calcCC(Statement impl) {
     int result = 1;
     visit (impl) {
@@ -122,6 +130,7 @@ int calcCC(Statement impl) {
     return result;
 }
 // End Helper functions
+
 // Calculation functions
 public int calculateVolume(){
 
@@ -226,6 +235,7 @@ public int calculateUnitSize(){
     return 4;
     
 }
+
 public int calculateCc(){
     allMethods = methodenAST(project);
     
