@@ -211,12 +211,54 @@ public void calculateCc(){
     
     //println(cc);
 }
+
+public void calculateDuplication(){
+	M3 model = createM3FromEclipseProject(project);
+	map[str, int] duplicationMap = ();
+	int duplicateBlocks = 0;
+	for(file <- files(model)){
+		fileLines = readFileLines(file);
+		fileLines = removeCommentsAndWhiteLinesFromFile(fileLines);
+		if(size(fileLines) < 6) continue;
+		list[str] codeLines = [];
+		for(int n <- [0 .. size(fileLines)])
+		{
+			do
+				codeLines += fileLines[n];
+			while(size(codeLines) < 6);
+			
+			hashValue = md5Hash(codeLines);
+			
+			if(hashValue in duplicationMap){
+				duplicationMap[hashValue] += 1;
+				duplicateBlocks += 1;
+				if(duplicationMap[hashValue] > 10)
+				{
+					println(codeLines);
+					println("");
+					println("");
+					println("");
+					println("");
+					println("");
+				}
+			}
+			else{
+				duplicationMap[hashValue] = 0;
+			}
+			
+			codeLines = tail(codeLines);
+		}
+	}
+	println(duplicateBlocks);
+}
+
 public void runAnalysis(){
 	println("SmallSQL");
 	//println("HyperSQL");
 	println("----");
 	
-    calculateUnitSize();
-    calculateCc();
+    //calculateUnitSize();
+    //calculateCc();
+    calculateDuplication();
 }
 
