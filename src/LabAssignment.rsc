@@ -218,5 +218,5 @@ public void runAnalysis(){
 	
     calculateUnitSize();
     calculateCc();
-    
 }
+
