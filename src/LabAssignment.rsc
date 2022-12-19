@@ -48,11 +48,11 @@ public int countIf(Statement d) {
    } 
    return count;
 }
-//Moet nog aangepast worden maar hij pakt nu ook comments later in de line. 
+/ 
 public list[str] removeCommentsFromMethod(list[str] method){
   list[str] methodWithoutCommentLines = [];
   for(int i <- [0..(size(method) - 1)]){
-      if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;][\/\/]\s\/*\/)/ := method[i]){
+      if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := method[i]){
           print("");
        } else {
        	  methodWithoutCommentLines += method[i] ;       	 
