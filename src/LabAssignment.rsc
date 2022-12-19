@@ -49,40 +49,41 @@ public int countIf(Statement d) {
    return count;
 }
 //Moet nog aangepast worden voor een aantal situaties. Lijkt te werken. 
-public list[str] removeCommentsFromFile(list[str] file){
-  list[str] fileWithoutCommentLines = [];
-  for(int i <- [0..(size(file) - 1)]){
-      if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := file[i]){
+public list[str] removeCommentsFromMethod(list[str] method){
+  list[str] methodWithoutCommentLines = [];
+  for(int i <- [0..(size(method) - 1)]){
+      if(/((\s|\/*)(\/\*|\s\*)|[^\w,\;]\s\/*\/)/ := method[i]){
           print("");
        } else {
-       	  fileWithoutCommentLines += file[i] ;       	 
+       	  methodWithoutCommentLines += method[i] ;       	 
        }       
       } 
-      return fileWithoutCommentLines;
+      return methodWithoutCommentLines;
 }
-public list[str] removeWhiteLinesFromFile(list[str] file){
-  list[str] fileWithoutWhiteLines = [];
-  for(int i <- [0..(size(file) - 1)]){
-      if(/^[ \t\r\n]*$/ := file[i]){
+public list[str] removeWhiteLinesFromMethod(list[str] method){
+  list[str] methodWithoutWhiteLines = [];
+  for(int i <- [0..(size(method) - 1)]){
+      if(/^[ \t\r\n]*$/ := method[i]){
           print("White line\n");
        } else {
-       	  fileWithoutWhiteLines += file[i] ;       	 
+       	  methodWithoutWhiteLines += method[i] ;       	 
        }       
       } 
-      return fileWithoutWhiteLines;
+      return methodWithoutWhiteLines;
 }
-public list[str] removeCommentsAndWhiteLinesFromFile(list[str] file){
-	if(size(file) <= 1) return file;
+public list[str] removeCommentsAndWhiteLinesFromMethod(list[str] method){
+	if(size(method) <= 1) return method;
 
-	list[str] fileWithout = removeWhiteLinesFromFile(file);
-	fileWithout = removeCommentsFromFile(fileWithout);
-	/*if(file != fileWithout){
+	list[str] methodWithout = removeWhiteLinesFromMethod(method);
+	methodWithout = removeCommentsFromMethod(methodWithout);
+	/*if(method != methodWithout){
 		writeFileLines(|project://MyRascal/src/comments.txt|, file);
 		writeFileLines(|project://MyRascal/src/nocomments.txt|, fileWithout);
 		
 	}*/
-	return fileWithout;
+	return methodWithout;
 }
+
 public void printMethods(loc project) {
 	M3 model = createM3FromEclipseProject(project);
 	for (loc l <- methods(model)) {
@@ -123,7 +124,7 @@ public void calculateUnitSize(){
 	int moderate = 30;
 	int high = 60;
 	map[loc, int] regels = ( a:size(readFileLines(a)) | a <- methods(model) );
-	map[loc, int] regelsWithoutWhiteOrComment =( a:size(removeCommentsAndWhiteLinesFromFile(readFileLines(a))) | a <- methods(model) );
+	map[loc, int] regelsWithoutWhiteOrComment =( a:size(removeCommentsAndWhiteLinesFromMethod(readFileLines(a))) | a <- methods(model) );
 	//println(sort(toList(regels), aflopend));
 	//for (<a, b> <- sort(toList(regels), aflopend))
       //println("<a.file>: <b> regels");
