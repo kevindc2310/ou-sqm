@@ -1,6 +1,7 @@
 module LabAssignment
 
 import IO;
+import String;
 import List;
 import Map;
 import Relation;
@@ -15,8 +16,8 @@ import util::Benchmark;
 
 
 
-loc project = |project://smallsql0.21_src.zip_expanded|;
-//loc project = |project://hsqldb|;
+//loc project = |project://smallsql0.21_src.zip_expanded|;
+loc project = |project://hsqldb|;
 
 // Helper functions
 
@@ -82,10 +83,12 @@ public list[str] removeWhiteLinesFromMethod(list[str] method){
       return methodWithoutWhiteLines;
 }
 
-public list[str] removeCommentsAndWhiteLinesFromMethod(list[str] method){
+public list[str] removeNonCodeFromText(list[str] method){
 	if(size(method) <= 1) return method;	
 	list[str] methodWithout = removeCommentsFromMethod(method);
 	methodWithout = removeWhiteLinesFromMethod(methodWithout);
+	//methodWithout = removeBracketLines(methodWithout);
+	methodWithout = removeImportOrPackagelLine(methodWithout);
 	/*if(method != methodWithout){
 		writeFileLines(|project://MyRascal/src/comments.txt|, file);
 		writeFileLines(|project://MyRascal/src/nocomments.txt|, fileWithout);
@@ -129,25 +132,37 @@ int calcCC(Statement impl) {
     }
     return result;
 }
-// End Helper functions
 
-// Calculation functions
-public int calculateVolume(){
+int calcStatementsSize(Statement impl){
+	list[str] lines = readFileLines(impl.src);
+	lines = removeNonCodeFromText(lines);
+	
+	return size(lines);
+}
 
-	M3 model = createM3FromEclipseProject(project);
+int calculateLocVolume(M3 model){
 
 	int totalLines = 0;
 	
 	for(file <- files(model)){
 		
 		fileLines = readFileLines(file);
-		fileLines = removeCommentsAndWhiteLinesFromMethod(fileLines);
-		fileLines = removeImportOrPackagelLine(fileLines);
+		fileLines = removeNonCodeFromText(fileLines);
 		totalLines += size(fileLines);
 	}
 	
-	println("LOC: <totalLines>");
+	return totalLines;
+}
+// End Helper functions
+
+// Calculation functions
+public int calculateVolume(){
+
+	M3 model = createM3FromEclipseProject(project);
 	
+	int totalLines = calculateLocVolume(model);
+	println("LOC: <totalLines>");
+		
 	// threshold waarden volgens sig voor java code
 	int verySmall = 66000;
 	int small = 246000;
@@ -185,40 +200,43 @@ public int calculateUnitSize(){
 	int moderate = 30;
 	int high = 60;
 	map[loc, int] regels = ( a:size(readFileLines(a)) | a <- methods(model) );
-	map[loc, int] regelsWithoutWhiteOrComment =( a:size(removeCommentsAndWhiteLinesFromMethod(readFileLines(a))) | a <- methods(model) );
+	map[loc, int] regelsWithoutWhiteOrComment =( a:size(removeNonCodeFromText(readFileLines(a))) | a <- methods(model) );
 	//println(sort(toList(regels), aflopend));
 	//for (<a, b> <- sort(toList(regels), aflopend))
       //println("<a.file>: <b> regels");
-    int numSimple = 0;
-    int numModerate = 0;
-    int numHigh = 0;
-    int numVeryHigh = 0;
-    int totalLinesOfCode = 0;
+    int numSimpleLoc = 0;
+    int numModerateLoc = 0;
+    int numHighLoc = 0;
+    int numVeryHighLoc = 0;
+    int totalLinesOfCode = calculateLocVolume(model);
     //We berekenen nu het aantal lines source code. 
+    list[str] result = [];
     for (<a, b> <- sort(toList(regelsWithoutWhiteOrComment))){
-    	totalLinesOfCode += b;
+    	result += "<a>;<b>";
     	if (b <= simple)
     	{
-    		numSimple += 1;
+    		numSimpleLoc += b;
     		continue;
     	}
     	if (b <= moderate)
     	{
-    		numModerate += 1;
+    		numModerateLoc += b;
     		continue;
     	}
     	if (b <= high)
     	{
-    		numHigh += 1;
+    		numHighLoc += b;
     		continue;
     	}
-    	numVeryHigh += 1;
+    	numVeryHighLoc += b;
     }
     
-    simplePercentage = round(toReal(numSimple)/toReal(numberOfMethods)*100);
-    moderatePercentage = round(toReal(numModerate)/toReal(numberOfMethods)*100);
-    highPercentage = round(toReal(numHigh)/toReal(numberOfMethods)*100);
-    veryHighPercentage = round(toReal(numVeryHigh)/toReal(numberOfMethods)*100);
+    //writeFileLines(|project://MyRascal/src/unitsize.txt|, result);
+    
+    simplePercentage = percent(numSimpleLoc,totalLinesOfCode);
+    moderatePercentage = percent(numModerateLoc,totalLinesOfCode);
+    highPercentage = percent(numHighLoc,totalLinesOfCode);
+    veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
     
     //real divideByTotal = cast(type[real],numberOfMethods);
     println("Unit size:");
@@ -237,60 +255,60 @@ public int calculateUnitSize(){
 }
 
 public int calculateCc(){
+	M3 model = createM3FromEclipseProject(project);
     allMethods = methodenAST(project);
     
     numberOfMethods = size(allMethods);
 	//println(numberOfMethods);
     cc = 0;
-    
-    result = sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend);
-    
+        
     // threshold waarden volgens sig
 	int simpleCC = 10;
 	int moderateCC = 20;
 	int highCC = 50;
 	
-	int numSimpleCC = 0;
-    int numModerateCC = 0;
-    int numHighCC = 0;
-    int numVeryHighCC = 0;
+	int numSimpleLoc = 0;
+    int numModerateLoc = 0;
+    int numHighLoc = 0;
+    int numVeryHighLoc = 0;
+    int totalLinesOfCode = calculateLocVolume(model);
     
     //println(sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend));
-    for (<a, b> <- sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend)){
+    for (<a, b, c> <- [<name, calcCC(s), calcStatementsSize(s)> | <name, s> <- allMethods ]){
     	if (b <= simpleCC)
     	{
-    		numSimpleCC += 1;
+    		numSimpleLoc += c;
     		continue;
     	}
     	if (b <= moderateCC)
     	{
-    		numModerateCC += 1;
+    		numModerateLoc += c;
     		continue;
     	}
     	if (b <= highCC)
     	{
-    		numHighCC += 1;
+    		numHighLoc += c;
     		continue;
     	}
-    	numVeryHighCC += 1;
+    	numVeryHighLoc += c;
     }
     
-    simplePercentage = round(toReal(numSimpleCC)/toReal(numberOfMethods)*100);
-    moderatePercentage = round(toReal(numModerateCC)/toReal(numberOfMethods)*100);
-    highPercentage = round(toReal(numHighCC)/toReal(numberOfMethods)*100);
-    veryHighPercentage = round(toReal(numVeryHighCC)/toReal(numberOfMethods)*100);
+    simplePercentage = percent(numSimpleLoc,totalLinesOfCode);
+    moderatePercentage = percent(numModerateLoc,totalLinesOfCode);
+    highPercentage = percent(numHighLoc,totalLinesOfCode);
+    veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
     
     println("CC:");
-    println(" * simple: <simplePercentage>% (<numSimpleCC>)");
-    println(" * moderate: <moderatePercentage>%(<numModerateCC>)");
-    println(" * high: <highPercentage>%(<numHighCC>)");
-    println(" * very high: <veryHighPercentage>%(<numVeryHighCC>)");
+    println(" * simple: <simplePercentage>%");
+    println(" * moderate: <moderatePercentage>%");
+    println(" * high: <highPercentage>%");
+    println(" * very high: <veryHighPercentage>%");
     
     // score volgens sig methode berekenen 
-    if(veryHighPercentage > 5 || highPercentage > 15 || moderatePercentage > 50) 0;
-    if(veryHighPercentage > 0 || highPercentage > 10 || moderatePercentage > 40) 1;
-    if(highPercentage > 5 || moderatePercentage > 30) 2;
-    if(moderatePercentage > 25) 3;
+    if(veryHighPercentage > 5 || highPercentage > 15 || moderatePercentage > 50) return 0;
+    if(veryHighPercentage > 0 || highPercentage > 10 || moderatePercentage > 40) return 1;
+    if(highPercentage > 5 || moderatePercentage > 30) return 2;
+    if(moderatePercentage > 25) return 3;
     return 4;
     
     
@@ -313,8 +331,7 @@ public int calculateDuplication(int blockSize){
 		bool insideDuplication = false;
 		
 		fileLines = readFileLines(file);
-		fileLines = removeCommentsAndWhiteLinesFromMethod(fileLines);
-		fileLines = removeImportOrPackagelLine(fileLines);
+		fileLines = removeNonCodeFromText(fileLines);
 		if(size(fileLines) < blockSize) continue;
 		totalLines += size(fileLines);
 		list[str] codeLines = [];
@@ -354,7 +371,7 @@ public int calculateDuplication(int blockSize){
 		}
 	}
 	
-	codeDuplication = round(toReal(duplicateLines)/toReal(totalLines)*100);
+	codeDuplication = percent(duplicateLines,totalLines);
 	
 	//writeFileLines(|project://MyRascal/src/duplication.txt|, duplicatedLinesResult);
 	println("duplicateBlocks: <duplicateBlocks>");
@@ -380,8 +397,8 @@ public void runAnalysis(){
 	println(bm);
 	*/
 	
-	println("SmallSQL");
-	//println("HyperSQL");
+	//println("SmallSQL");
+	println("HyperSQL");
 	println("----");
 		
 	volumeScore = calculateVolume();
