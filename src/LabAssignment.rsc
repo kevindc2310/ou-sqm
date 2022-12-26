@@ -10,8 +10,7 @@ import metrics::Duplication;
 import util::Math;
 
 //loc project = |project://smallsql0/|;
-//loc project = |project://hsqldb|;
-loc project = |project://JabberPoint/|; 
+loc project = |project://hsqldb|;
 
 public void runAnalysis(){
 	
@@ -19,7 +18,7 @@ public void runAnalysis(){
 	println("HyperSQL");
 	println("----");
 		
-	int volumeScore = calculateVolume(project);
+    volumeScore = calculateVolume(project);
     unitSizeScore = calculateUnitSize(project);
     complexityScore = calculateCc(project);
     duplicationScore = calculateDuplication(6, project);
