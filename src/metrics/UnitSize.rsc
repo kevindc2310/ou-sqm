@@ -58,6 +58,8 @@ public int calculateUnitSize(loc project){
     highPercentage = percent(numHighLoc,totalLinesOfCode);
     veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
     
+    drawGraphic("UnitSize:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
+    
     //real divideByTotal = cast(type[real],numberOfMethods);
     println("Unit size:");
     println(" * simple: <simplePercentage>%");
