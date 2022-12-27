@@ -10,6 +10,7 @@ import util::calculateLocVolume;
 import Map;
 import Set;
 import util::Math;
+import visual::graphics;
 
 public int calculateUnitSize(loc project){
 	set[loc] bestanden = javaFiles(project);
