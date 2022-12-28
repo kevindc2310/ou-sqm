@@ -7,12 +7,16 @@ import metrics::UnitTests;
 import metrics::UnitSize;
 import metrics::UnitComplexity;
 import metrics::Duplication;
+import metrics::UnitTests;
 import util::Math;
 
-//loc project = |project://smallsql0/|;
-loc project = |project://hsqldb|;
+loc project = |project://smallsql0/|;
+//loc project = |project://smallsql0.21_src.zip_expanded|;
+//loc project = |project://hsqldb|;
 
 public void runAnalysis(){
+    //calculateUnitTestCoverage(project);
+
 	
 	//println("SmallSQL");
 	println("HyperSQL");

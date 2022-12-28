@@ -3,6 +3,7 @@ module metrics::UnitSize
 import lang::java::jdt::m3::Core; 
 import lang::java::m3::AST;
 import util::javaFiles;
+import util::methodenAST;
 import IO;
 import List;
 import util::removeNonCodeFromText;
@@ -15,8 +16,9 @@ public int calculateUnitSize(loc project){
 	set[loc] bestanden = javaFiles(project);
 	println("Aantal java files: <size(bestanden)>");
 	M3 model = createM3FromEclipseProject(project);
-	numberOfMethods = size(methods(model));
-	println("Aantal methoden: <numberOfMethods>");
+	allMethods = methodenAST(project); // todo gebruik deze methodes voor de units
+	numberOfMethods = size(allMethods);
+	println("Aantal units: <numberOfMethods>");
 	
 	// threshold waarden volgens sig
 	int simple = 15;
