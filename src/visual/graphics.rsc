@@ -13,7 +13,7 @@ public void drawGraphic(str method, real simplePercentage, real moderatePercenta
 	boxes+=box(text(method+" mod"), fillColor("orange"), popup("<moderatePercentage>%"), resizable(false), size(width, moderatePercentage*2));
 	boxes+=box(text(method+" high"), fillColor("red"), popup("<highPercentage>%"),resizable(false), size(width, highPercentage*2));
 	boxes+=box(text(method+" very high"), fillColor("blue"), popup("<veryHighPercentage>%"),resizable(false), size(width, veryHighPercentage*2));
-	boxes+=box(text("Comment"), fillColor("white"), popup("<other>%"),resizable(false), size(width, other*2));
+	boxes+=box(text("Other"), fillColor("white"), popup("<other>%"),resizable(false), size(width, other*2));
 	render(pack(boxes, gap(0)));
 }
 
