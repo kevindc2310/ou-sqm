@@ -9,6 +9,7 @@ import util::calcCC;
 import util::calcStatementsSize;
 import util::Math;
 import IO;
+import visual::graphics;
 
 public int calculateCc(loc project){
 	M3 model = createM3FromEclipseProject(project);
@@ -53,6 +54,8 @@ public int calculateCc(loc project){
     moderatePercentage = percent(numModerateLoc,totalLinesOfCode);
     highPercentage = percent(numHighLoc,totalLinesOfCode);
     veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
+    
+    drawGraphic("UnitComplexity:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     
     println("CC:");
     println(" * simple: <simplePercentage>%");

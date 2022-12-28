@@ -11,6 +11,7 @@ import util::calculateLocVolume;
 import Map;
 import Set;
 import util::Math;
+import visual::graphics;
 
 public int calculateUnitSize(loc project){
 	set[loc] bestanden = javaFiles(project);
@@ -59,6 +60,8 @@ public int calculateUnitSize(loc project){
     moderatePercentage = percent(numModerateLoc,totalLinesOfCode);
     highPercentage = percent(numHighLoc,totalLinesOfCode);
     veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
+    
+    drawGraphic("UnitSize:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     
     //real divideByTotal = cast(type[real],numberOfMethods);
     println("Unit size:");
