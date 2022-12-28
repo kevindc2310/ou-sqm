@@ -60,13 +60,13 @@ public int calculateDuplication(int blockSize, loc project){
 		}
 	}
 	
-	codeDuplication = percent(duplicateLines,totalLines);
+	codeDuplication = toReal(duplicateLines)/toReal(totalLines)*100;
 	
 	//writeFileLines(|project://MyRascal/src/duplication.txt|, duplicatedLinesResult);
-	println("duplicateBlocks: <duplicateBlocks>");
-	println("duplicateLines: <duplicateLines>");
-	println("totalLines: <totalLines>");
-	println("Code duplication: <codeDuplication>%");
+	//println("duplicateBlocks: <duplicateBlocks>");
+	//println("duplicateLines: <duplicateLines>");
+	//println("totalLines: <totalLines>");
+	println("Code duplication: <round(codeDuplication)>%");
 	
 	if(codeDuplication > 20) return 0;
 	if(codeDuplication > 10) return 1;

@@ -18,8 +18,8 @@ public void runAnalysis(){
     //calculateUnitTestCoverage(project);
 
 	
-	//println("SmallSQL");
-	println("HyperSQL");
+	println("SmallSQL");
+	//println("HyperSQL");
 	println("----");
 		
     volumeScore = calculateVolume(project);

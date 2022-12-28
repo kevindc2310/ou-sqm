@@ -4,10 +4,10 @@ import vis::Figure;
 import vis::Render;
 import vis::KeySym;
 
-public void drawGraphic(str method, int simplePercentage, int moderatePercentage, int highPercentage, int veryHighPercentage ){
+public void drawGraphic(str method, real simplePercentage, real moderatePercentage, real highPercentage, real veryHighPercentage ){
 	list[Figure] boxes=[];
 	int width=150;
-	int other=100-simplePercentage-moderatePercentage-highPercentage-veryHighPercentage; 
+	real other=100-simplePercentage-moderatePercentage-highPercentage-veryHighPercentage; 
 	
 	boxes+=box(text(method+" simple"), fillColor("green"), popup("<simplePercentage>%"), resizable(false), size(width, simplePercentage*2));
 	boxes+=box(text(method+" mod"), fillColor("orange"), popup("<moderatePercentage>%"), resizable(false), size(width, moderatePercentage*2));

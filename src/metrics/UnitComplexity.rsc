@@ -50,18 +50,18 @@ public int calculateCc(loc project){
     	numVeryHighLoc += c;
     }
     
-    simplePercentage = percent(numSimpleLoc,totalLinesOfCode);
-    moderatePercentage = percent(numModerateLoc,totalLinesOfCode);
-    highPercentage = percent(numHighLoc,totalLinesOfCode);
-    veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
+    simplePercentage = toReal(numSimpleLoc)/toReal(totalLinesOfCode)*100;
+    moderatePercentage = toReal(numModerateLoc)/toReal(totalLinesOfCode)*100;
+    highPercentage = toReal(numHighLoc)/toReal(totalLinesOfCode)*100;
+    veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfCode)*100;
     
     drawGraphic("UnitComplexity:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     
     println("CC:");
-    println(" * simple: <simplePercentage>%");
-    println(" * moderate: <moderatePercentage>%");
-    println(" * high: <highPercentage>%");
-    println(" * very high: <veryHighPercentage>%");
+    println(" * simple: <round(simplePercentage)>%");
+    println(" * moderate: <round(moderatePercentage)>%");
+    println(" * high: <round(highPercentage)>%");
+    println(" * very high: <round(veryHighPercentage)>%");
     
     // score volgens sig methode berekenen 
     if(veryHighPercentage > 5 || highPercentage > 15 || moderatePercentage > 50) return 0;

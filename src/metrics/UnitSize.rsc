@@ -56,19 +56,19 @@ public int calculateUnitSize(loc project){
     
     //writeFileLines(|project://MyRascal/src/unitsize.txt|, result);
     
-    simplePercentage = percent(numSimpleLoc,totalLinesOfCode);
-    moderatePercentage = percent(numModerateLoc,totalLinesOfCode);
-    highPercentage = percent(numHighLoc,totalLinesOfCode);
-    veryHighPercentage = percent(numVeryHighLoc,totalLinesOfCode);
+    simplePercentage = toReal(numSimpleLoc)/toReal(totalLinesOfCode)*100;
+    moderatePercentage = toReal(numModerateLoc)/toReal(totalLinesOfCode)*100;
+    highPercentage = toReal(numHighLoc)/toReal(totalLinesOfCode)*100;
+    veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfCode)*100;
     
     drawGraphic("UnitSize:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     
     //real divideByTotal = cast(type[real],numberOfMethods);
     println("Unit size:");
-    println(" * simple: <simplePercentage>%");
-    println(" * moderate: <moderatePercentage>%");
-    println(" * high: <highPercentage>%");
-    println(" * very high: <veryHighPercentage>%");
+    println(" * simple: <round(simplePercentage)>%");
+    println(" * moderate: <round(moderatePercentage)>%");
+    println(" * high: <round(highPercentage)>%");
+    println(" * very high: <round(veryHighPercentage)>%");
     
     // score volgens sig methode berekenen 
     if(veryHighPercentage > 5 || highPercentage > 15 || moderatePercentage > 50) return 0;
