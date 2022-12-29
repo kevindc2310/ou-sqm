@@ -31,6 +31,7 @@ public list[str] removeAbstractMethods(list[str] text){
 				}
 			continue;
 			}
+			else continue;
 		}
 		result += line;
 	}
