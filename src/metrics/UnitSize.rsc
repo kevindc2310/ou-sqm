@@ -8,6 +8,7 @@ import IO;
 import List;
 import util::removeNonCodeFromText;
 import util::calculateLocVolume;
+import util::calcStatementsSize;
 import Map;
 import Set;
 import util::Math;
@@ -31,11 +32,10 @@ public int calculateUnitSize(loc project){
     int numModerateLoc = 0;
     int numHighLoc = 0;
     int numVeryHighLoc = 0;
-    int totalLinesOfCode = calculateLocVolume(model);
-    //We berekenen nu het aantal lines source code. 
-    list[str] result = [];
-    for (<a, b> <- sort(toList(regelsWithoutWhiteOrComment))){
-    	result += "<a>;<b>";
+    int totalLinesOfUnitCode = 0;
+    
+     for (<a, b> <- [<name, calcStatementsSize(s)> | <name, s> <- allMethods ]){
+     	totalLinesOfUnitCode += b;
     	if (b <= simple)
     	{
     		numSimpleLoc += b;
@@ -54,12 +54,10 @@ public int calculateUnitSize(loc project){
     	numVeryHighLoc += b;
     }
     
-    //writeFileLines(|project://MyRascal/src/unitsize.txt|, result);
-    
-    simplePercentage = toReal(numSimpleLoc)/toReal(totalLinesOfCode)*100;
-    moderatePercentage = toReal(numModerateLoc)/toReal(totalLinesOfCode)*100;
-    highPercentage = toReal(numHighLoc)/toReal(totalLinesOfCode)*100;
-    veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfCode)*100;
+    simplePercentage = toReal(numSimpleLoc)/toReal(totalLinesOfUnitCode)*100;
+    moderatePercentage = toReal(numModerateLoc)/toReal(totalLinesOfUnitCode)*100;
+    highPercentage = toReal(numHighLoc)/toReal(totalLinesOfUnitCode)*100;
+    veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfUnitCode)*100;
     
     drawGraphic("UnitSize:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     

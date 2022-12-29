@@ -10,8 +10,8 @@ import metrics::Duplication;
 import metrics::UnitTests;
 import util::Math;
 
-loc project = |project://smallsql0/|;
-//loc project = |project://smallsql0.21_src.zip_expanded|;
+//loc project = |project://smallsql0/|;
+loc project = |project://smallsql0.21_src.zip_expanded|;
 //loc project = |project://hsqldb|;
 
 public void runAnalysis(){

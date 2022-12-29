@@ -12,6 +12,6 @@ public list[str] removeNonCodeFromText(list[str] method){
 	list[str] methodWithout = removeCommentsFromMethod(method);
 	methodWithout = removeWhiteLinesFromMethod(methodWithout);
 	methodWithout = removeImportOrPackagelLine(methodWithout);
-	methodWithout = removeAbstractMethods(methodWithout);
+	//methodWithout = removeAbstractMethods(methodWithout);
 	return methodWithout;
 }

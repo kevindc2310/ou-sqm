@@ -28,10 +28,11 @@ public int calculateCc(loc project){
     int numModerateLoc = 0;
     int numHighLoc = 0;
     int numVeryHighLoc = 0;
-    int totalLinesOfCode = calculateLocVolume(model);
+    int totalLinesOfUnitCode = 0;;
     
     //println(sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend));
     for (<a, b, c> <- [<name, calcCC(s), calcStatementsSize(s)> | <name, s> <- allMethods ]){
+    	totalLinesOfUnitCode += c;
     	if (b <= simpleCC)
     	{
     		numSimpleLoc += c;
@@ -50,10 +51,10 @@ public int calculateCc(loc project){
     	numVeryHighLoc += c;
     }
     
-    simplePercentage = toReal(numSimpleLoc)/toReal(totalLinesOfCode)*100;
-    moderatePercentage = toReal(numModerateLoc)/toReal(totalLinesOfCode)*100;
-    highPercentage = toReal(numHighLoc)/toReal(totalLinesOfCode)*100;
-    veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfCode)*100;
+    simplePercentage = toReal(numSimpleLoc)/toReal(totalLinesOfUnitCode)*100;
+    moderatePercentage = toReal(numModerateLoc)/toReal(totalLinesOfUnitCode)*100;
+    highPercentage = toReal(numHighLoc)/toReal(totalLinesOfUnitCode)*100;
+    veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfUnitCode)*100;
     
     drawGraphic("UnitComplexity:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     

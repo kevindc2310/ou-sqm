@@ -21,8 +21,8 @@ public int calculateDuplication(int blockSize, loc project){
 		
 		fileLines = readFileLines(file);
 		fileLines = removeNonCodeFromText(fileLines);
-		if(size(fileLines) < blockSize) continue;
 		totalLines += size(fileLines);
+		if(size(fileLines) < blockSize) continue;
 		list[str] codeLines = [];
 		for(int n <- [0 .. size(fileLines)])
 		{
@@ -63,10 +63,10 @@ public int calculateDuplication(int blockSize, loc project){
 	codeDuplication = toReal(duplicateLines)/toReal(totalLines)*100;
 	
 	//writeFileLines(|project://MyRascal/src/duplication.txt|, duplicatedLinesResult);
-	//println("duplicateBlocks: <duplicateBlocks>");
+	println("duplicateBlocks: <duplicateBlocks>");
 	//println("duplicateLines: <duplicateLines>");
 	//println("totalLines: <totalLines>");
-	println("Code duplication: <round(codeDuplication)>%");
+	//println("Code duplication: <round(codeDuplication)>%");
 	
 	if(codeDuplication > 20) return 0;
 	if(codeDuplication > 10) return 1;
