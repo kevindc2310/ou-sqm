@@ -1,7 +1,7 @@
 module metrics::Volume
 
 import lang::java::jdt::m3::Core; 
-import util::calculateLocVolume;
+import util::Calculator;
 import IO;
 
 public int calculateVolume(loc project){

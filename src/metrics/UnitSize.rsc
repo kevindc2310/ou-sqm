@@ -2,20 +2,18 @@ module metrics::UnitSize
 
 import lang::java::jdt::m3::Core; 
 import lang::java::m3::AST;
-import util::javaFiles;
-import util::methodenAST;
+import util::M3;
 import IO;
 import List;
-import util::removeNonCodeFromText;
-import util::calculateLocVolume;
-import util::calcStatementsSize;
+import util::String;
+import util::Calculator;
 import Map;
 import Set;
 import util::Math;
 import visual::graphics;
 
 public int calculateUnitSize(loc project){
-	set[loc] bestanden = javaFiles(project);
+	set[loc] bestanden = getJavaFiles(project);
 	println("Aantal java files: <size(bestanden)>");
 	M3 model = createM3FromEclipseProject(project);
 	allMethods = methodenAST(project); // todo gebruik deze methodes voor de units

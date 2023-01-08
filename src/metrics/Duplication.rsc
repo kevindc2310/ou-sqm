@@ -5,7 +5,7 @@ import lang::java::m3::AST;
 import Map;
 import List;
 import IO;
-import util::removeNonCodeFromText;
+import util::String;
 import util::Math;
 
 public int calculateDuplication(int blockSize, loc project){
@@ -63,10 +63,10 @@ public int calculateDuplication(int blockSize, loc project){
 	codeDuplication = toReal(duplicateLines)/toReal(totalLines)*100;
 	
 	//writeFileLines(|project://MyRascal/src/duplication.txt|, duplicatedLinesResult);
-	println("duplicateBlocks: <duplicateBlocks>");
+	//println("duplicateBlocks: <duplicateBlocks>");
 	//println("duplicateLines: <duplicateLines>");
 	//println("totalLines: <totalLines>");
-	//println("Code duplication: <round(codeDuplication)>%");
+	println("Code duplication: <round(codeDuplication)>%");
 	
 	if(codeDuplication > 20) return 0;
 	if(codeDuplication > 10) return 1;

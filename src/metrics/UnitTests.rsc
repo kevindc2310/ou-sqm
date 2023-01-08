@@ -2,12 +2,12 @@ module metrics::UnitTests
 
 import lang::java::jdt::m3::Core; 
 import lang::java::m3::AST;
-import util::javaFiles;
+import util::M3;
 import IO;
 import List;
-import util::removeNonCodeFromText;
+import util::String;
 import util::javaFiles;
-import util::calculateLocVolume;
+import util::Calculator;
 import Map;
 import Set;
 import util::Math;

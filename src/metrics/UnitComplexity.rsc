@@ -2,11 +2,9 @@ module metrics::UnitComplexity
 
 import lang::java::jdt::m3::Core; 
 import lang::java::m3::AST;
-import util::methodenAST;
+import util::M3;
 import List;
-import util::calculateLocVolume;
-import util::calcCC;
-import util::calcStatementsSize;
+import util::Calculator;
 import util::Math;
 import IO;
 import visual::graphics;
@@ -30,7 +28,6 @@ public int calculateCc(loc project){
     int numVeryHighLoc = 0;
     int totalLinesOfUnitCode = 0;;
     
-    //println(sort([<name, calcCC(s)> | <name, s> <- allMethods ], aflopend));
     for (<a, b, c> <- [<name, calcCC(s), calcStatementsSize(s)> | <name, s> <- allMethods ]){
     	totalLinesOfUnitCode += c;
     	if (b <= simpleCC)
