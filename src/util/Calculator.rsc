@@ -5,7 +5,7 @@ import util::String;
 import IO;
 import List;
 
-int calcCC(Statement impl) {
+int calcCyclomaticComplexity(Statement impl) {
     int result = 1;
     visit (impl) {
         case \if(_,_) : result += 1;
@@ -43,11 +43,11 @@ int calculateLocVolume(M3 model){
 	return totalLines;
 }
 
-public int countIf(Statement d) {
+/*public int countIf(Statement d) {
    int count = 0;
    visit(d) {
       case \if(_,_): count=count+1;
       case \if(_,_,_): count=count+1;
    } 
    return count;
-}
+}*/

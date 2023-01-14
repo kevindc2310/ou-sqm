@@ -7,17 +7,16 @@ import IO;
 import List;
 import util::String;
 import util::Calculator;
-import Map;
 import Set;
 import util::Math;
-import visual::graphics;
+import visual::StackedBar;
 
 public int calculateUnitSize(loc project){
-	set[loc] bestanden = getJavaFiles(project);
-	println("Aantal java files: <size(bestanden)>");
+	set[loc] files = getJavaFiles(project);
+	println("Aantal java files: <size(files)>");
 	M3 model = createM3FromEclipseProject(project);
-	allMethods = methodenAST(project); // todo gebruik deze methodes voor de units
-	numberOfMethods = size(allMethods);
+	allUnits = getUnits(project);
+	numberOfMethods = size(allUnits);
 	println("Aantal units: <numberOfMethods>");
 	
 	// threshold waarden volgens sig
@@ -32,7 +31,7 @@ public int calculateUnitSize(loc project){
     int numVeryHighLoc = 0;
     int totalLinesOfUnitCode = 0;
     
-     for (<a, b> <- [<name, calcStatementsSize(s)> | <name, s> <- allMethods ]){
+     for (<a, b> <- [<name, calcStatementsSize(s)> | <name, s> <- allUnits ]){
      	totalLinesOfUnitCode += b;
     	if (b <= simple)
     	{
@@ -57,7 +56,7 @@ public int calculateUnitSize(loc project){
     highPercentage = toReal(numHighLoc)/toReal(totalLinesOfUnitCode)*100;
     veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfUnitCode)*100;
     
-    drawGraphic("UnitSize:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
+    drawGraphic("UnitSize",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
     
     //real divideByTotal = cast(type[real],numberOfMethods);
     println("Unit size:");

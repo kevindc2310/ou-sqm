@@ -10,7 +10,7 @@ public int calculateVolume(loc project){
 	int totalLines = calculateLocVolume(model);
 	println("LOC: <totalLines>");
 		
-	// threshold waarden volgens sig voor java code
+	// threshold values according to SIG for Java projects
 	int verySmall = 66000;
 	int small = 246000;
 	int moderate = 665000;

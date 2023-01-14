@@ -1,23 +1,36 @@
 module LabAssignment
 
 import IO;
+import String;
 import List;
+
+import lang::java::m3::AST;
+import lang::java::flow::JavaToObjectFlow; 
+
+import analysis::flow::ObjectFlow;
+
+import vis::Figure; 
+import vis::Render;
+
+import util::Math;
+
 import metrics::Volume;
 import metrics::UnitTests;
 import metrics::UnitSize;
 import metrics::UnitComplexity;
 import metrics::Duplication;
 import metrics::UnitTests;
-import util::Math;
+
+import visual::UnitSizeComplexityRelation;
+import visual::ClassDependencies;
+
+map[int, str] scoreStrings = (0:"--",1:"-",2:"o",3:"+",4:"++");
 
 //loc project = |project://smallsql0/|;
 loc project = |project://smallsql0.21_src.zip_expanded|;
 //loc project = |project://hsqldb|;
 
 public void runAnalysis(){
-    //calculateUnitTestCoverage(project);
-
-	
 	println("SmallSQL");
 	//println("HyperSQL");
 	println("----");
@@ -26,8 +39,7 @@ public void runAnalysis(){
     unitSizeScore = calculateUnitSize(project);
     complexityScore = calculateCc(project);
     duplicationScore = calculateDuplication(6, project);
-    
-    map[int, str] scoreStrings = (0:"--",1:"-",2:"o",3:"+",4:"++");
+    //calculateUnitTestCoverage(project);
     
     println();
     println("volume score: <scoreStrings[volumeScore]>");
@@ -58,3 +70,7 @@ public void runAnalysis(){
     println();
     println("overall maintainability score: <scoreStrings[maintainability]>");
 }
+
+
+
+

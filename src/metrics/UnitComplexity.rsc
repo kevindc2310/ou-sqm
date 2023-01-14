@@ -7,13 +7,15 @@ import List;
 import util::Calculator;
 import util::Math;
 import IO;
-import visual::graphics;
+import lang::json::IO;
+import visual::StackedBar;
+import visual::UnitSizeComplexityRelation;
 
 public int calculateCc(loc project){
 	M3 model = createM3FromEclipseProject(project);
-    allMethods = methodenAST(project);
+    allUnits = getUnits(project);
     
-    numberOfMethods = size(allMethods);
+    numberOfMethods = size(allUnits);
 	//println(numberOfMethods);
     cc = 0;
         
@@ -26,9 +28,12 @@ public int calculateCc(loc project){
     int numModerateLoc = 0;
     int numHighLoc = 0;
     int numVeryHighLoc = 0;
-    int totalLinesOfUnitCode = 0;;
+    int totalLinesOfUnitCode = 0;
     
-    for (<a, b, c> <- [<name, calcCC(s), calcStatementsSize(s)> | <name, s> <- allMethods ]){
+    list[Point] graphData = [];
+    
+    for (<a, b, c> <- [<location, calcCyclomaticComplexity(s), calcStatementsSize(s)> | <location, s> <- allUnits ]){
+    	graphData += point(b,c,a);
     	totalLinesOfUnitCode += c;
     	if (b <= simpleCC)
     	{
@@ -53,7 +58,9 @@ public int calculateCc(loc project){
     highPercentage = toReal(numHighLoc)/toReal(totalLinesOfUnitCode)*100;
     veryHighPercentage = toReal(numVeryHighLoc)/toReal(totalLinesOfUnitCode)*100;
     
-    drawGraphic("UnitComplexity:",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
+    drawGraphic("UnitComplexity",simplePercentage, moderatePercentage, highPercentage, veryHighPercentage);
+    
+    writeJSON(|project://MyRascal/src/output/complexitysizes.json|, graphData);
     
     println("CC:");
     println(" * simple: <round(simplePercentage)>%");
