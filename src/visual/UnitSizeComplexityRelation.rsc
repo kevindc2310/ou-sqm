@@ -8,14 +8,9 @@ import Content;
 @doc{
   ```rascal-shell
     import visual::UnitSizeComplexityRelation;
-    list[Point] graphData = [point(0,0), point(0,1)];
-    makeVisualisation(graphData);
+    list[Point] complexityGraphData = readJSON(#list[Point], |project://MyRascal/src/output/complexitysizes.json|);
+    makeVisualisation(complexityGraphData);
   ```
-}
-
-public void generateComplexitySizeGraph(){
-	list[Point] complexityGraphData = readJSON(#list[Point], |project://MyRascal/src/output/complexitysizes.json|);
-	makeVisualisation(complexityGraphData);
 }
 
 @doc{

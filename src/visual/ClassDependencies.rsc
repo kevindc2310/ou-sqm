@@ -66,11 +66,6 @@ public void generateClassDependencies(loc project){
   writeJSON(|project://MyRascal/src/output/dependencies.json|, dependencies);
 }
 
-public void generateClassDependencyGraph(){
-	list[Dependency] dependencyGraphData = readJSON(#list[Dependency], |project://MyRascal/src/output/dependencies.json|);
-	makeDependencyVisualisation(dependencyGraphData);
-}
-
 @doc{
   An ADT to encapsuate a dependency between classes
 }
