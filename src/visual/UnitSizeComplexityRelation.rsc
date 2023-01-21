@@ -77,11 +77,12 @@ private HTMLElement plotHTML()
                       \data(
                             "
 '// Read data
-var tmp = [];
+'var scatterdata = [];
 'd3.json(\"/chart\").then(function(data) {
-'  tmp = data.graphData;
-'})
-" + readFile(|project://MyRascal/src/js/scatter.js|)
+'  scatterdata = data.graphData;
+" + readFile(|project://MyRascal/src/js/scatter.js|) + "
+'})"
+
                       )
             ], \type="text/javascript")
         ] )

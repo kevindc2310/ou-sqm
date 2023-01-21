@@ -1,6 +1,15 @@
-var diameter = 960,
+// some Rascal configurations wrap the objects and others don't, the code below solves this
+if(classLinks.length > 0 && classLinks[0]["Dependency"] !== undefined){
+  classLinks = classLinks.map(a => a.Dependency);
+}
+
+document.body.innerHTML += "<div class='legend-div'>Hover over a class to see the usages</div><br>";
+document.body.innerHTML += "<div class='legend-div'>Class A<div class='legend-color-div' style='background-color:green;'></div>uses Class B</div>";
+document.body.innerHTML += "<div class='legend-div'>Class A<div class='legend-color-div' style='background-color:red;'></div>is used by Class B</div>";
+
+var diameter = 500 + 800/200*classLinks.length,
     radius = diameter / 2,
-    innerRadius = radius - 120;
+    innerRadius = radius - 200;
 
 var cluster = d3.cluster()
     .size([360, innerRadius]);

@@ -69,7 +69,7 @@ public void generateClassDependencies(loc project){
 @doc{
   An ADT to encapsuate a dependency between classes
 }
-data Dependency = dependency(str name, set[str] imports, int size);
+data Dependency = dependency(str name, set[str] imports, int size); 
 
 @doc{
   GraphData encapsulates a list of dependencies that for the graphs' data
@@ -125,6 +125,17 @@ private HTMLElement plotHTML()
                       style([
                       \data(
                             "
+'.legend-color-div {
+'  width: 40px;
+'  height: 5px;
+'  display: inline-block;
+'  margin: 0px 10px;
+'  vertical-align: middle;
+'}
+'
+'.legend-div {
+'  font: 300 11px \"Helvetica Neue\", Helvetica, Arial, sans-serif;
+'}
 '.node {
 '  font: 300 11px \"Helvetica Neue\", Helvetica, Arial, sans-serif;
 '  fill: #bbb;

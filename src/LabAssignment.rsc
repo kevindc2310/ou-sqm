@@ -32,7 +32,7 @@ loc project = |project://smallsql0.21_src.zip_expanded|;
 
 public void runAnalysis(){
 	println("SmallSQL");
-	//println("HyperSQL");
+	//println("HSQLDB");
 	println("----");
 		
     volumeScore = calculateVolume(project);
