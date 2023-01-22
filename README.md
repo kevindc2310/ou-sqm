@@ -35,6 +35,8 @@ The graph is also interactive:
 * It is zoomable through the use of a mousewheel
 * Hovering over a dot will show the location and the name of the unit
 
+![image](https://user-images.githubusercontent.com/25271716/213926379-6b1f7cd7-2193-4786-b55a-be9f452e3079.png)
+
 #### Class dependency hierarchical edge bundles
 A diagram that displays the dependencies of classes in both 'used' and 'used by' ways. To display, the data first needs to be calculated:
 ```
@@ -47,4 +49,4 @@ Next, you can visualize it using the following code:
   list[Dependency] dependencyGraphData = readJSON(#list[Dependency], |project://MyRascal/src/output/dependencies.json|);
   makeDependencyVisualisation(dependencyGraphData);
 ```
-
+![image](https://user-images.githubusercontent.com/25271716/213926322-3de033d3-fec5-4155-afa4-2bc37147ea26.png)
