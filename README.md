@@ -17,5 +17,33 @@ import LabAssignment.rsc;
 runAnalysis();
 ```
 
-# Visualization
+### Visualization
+#### Unit size and unit complexity stacked bars
+The visualizations of these metrics will automatically calculated when running the analysis. They should automatically display in Eclipse.
+
+#### Unit size and complexity scatter chart
+This chart displays the relations between unit sizes and their complexity. The data for this chart is genereted while running the analysis. You can find it under src/output/complexitysizes.json. In order to display the graph, enter the following lines of code in the Rascal shell:
+```
+  import visual::UnitSizeComplexityRelation;
+  import lang::json::IO;
+  list[Point] complexityGraphData = readJSON(#list[Point], |project://MyRascal/src/output/complexitysizes.json|);
+  makeVisualisation(complexityGraphData);
+```
+The graph is also interactive:
+* It can toggle the threshold values of the unit size and complexity metrics as colored zones.
+* It is zoomable through the use of a mousewheel
+* Hovering over a dot will show the location and the name of the unit
+
+#### Class dependency hierarchical edge bundles
+A diagram that displays the dependencies of classes in both 'used' and 'used by' ways. To display, the data first needs to be calculated:
+```
+  import visual::ClassDependencies;
+  import lang::json::IO;
+  generateClassDependencies(|project://MyRascal/src/output/complexitysizes.json|);
+```
+Next, you can visualize it using the following code:
+```
+  list[Dependency] dependencyGraphData = readJSON(#list[Dependency], |project://MyRascal/src/output/dependencies.json|);
+  makeDependencyVisualisation(dependencyGraphData);
+```
 
