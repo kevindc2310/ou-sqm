@@ -20,6 +20,7 @@ runAnalysis();
 ### Visualization
 #### Unit size and unit complexity stacked bars
 The visualizations of these metrics will automatically calculated when running the analysis. They should automatically display in Eclipse.
+![image](https://user-images.githubusercontent.com/25271716/213926059-d3fbee77-3b82-438c-9f0f-963e6de256ea.png)![image](https://user-images.githubusercontent.com/25271716/213926093-e336dfc7-99b1-47c5-8608-ef5681aa5e7a.png)
 
 #### Unit size and complexity scatter chart
 This chart displays the relations between unit sizes and their complexity. The data for this chart is genereted while running the analysis. You can find it under src/output/complexitysizes.json. In order to display the graph, enter the following lines of code in the Rascal shell:
