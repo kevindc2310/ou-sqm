@@ -26,7 +26,7 @@ import visual::ClassDependencies;
 
 map[int, str] scoreStrings = (0:"--",1:"-",2:"o",3:"+",4:"++");
 
-tuple[str name, loc location] Project = <"SmallSQL",|project://smallsql0.21_src.zip_expanded|>;
+tuple[str name, loc location] Project = <"SmallSQL",|project://smallsql|>;
 //tuple[str name, loc location] Project = <"HSQL DB",|project://hsqldb|>;
 
 @doc{
