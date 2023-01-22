@@ -4,11 +4,17 @@ import IO;
 import lang::java::m3::AST;
 import util::Resources;
 
+@doc{
+  function that returns all java files of a project
+}
 public set[loc] getJavaFiles(loc project) {
    Resource r = getProject(project);
    return { a | /file(a) <- r, a.extension == "java" };
 }
 
+@doc{
+  function that returns all units of a project
+}
 public lrel[str, Statement] getUnits(loc project) {
    set[loc] bestanden = getJavaFiles(project);
    

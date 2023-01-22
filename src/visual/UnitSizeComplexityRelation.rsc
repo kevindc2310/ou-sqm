@@ -8,6 +8,7 @@ import Content;
 @doc{
   ```rascal-shell
     import visual::UnitSizeComplexityRelation;
+    import lang::json::IO;
     list[Point] complexityGraphData = readJSON(#list[Point], |project://MyRascal/src/output/complexitysizes.json|);
     makeVisualisation(complexityGraphData);
   ```

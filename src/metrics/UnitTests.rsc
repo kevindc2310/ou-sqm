@@ -12,6 +12,9 @@ import Map;
 import Set;
 import util::Math;
 
+@doc{
+  function that calculates unit size score score of a project, currently not used
+}
 public void calculateUnitTestCoverage(loc project){
 	M3 model = createM3FromEclipseProject(project);
 	set[loc] bestanden = javaFiles(project);

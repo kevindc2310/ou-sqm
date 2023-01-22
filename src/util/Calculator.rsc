@@ -5,6 +5,9 @@ import util::String;
 import IO;
 import List;
 
+@doc{
+  function that calculates cyclomatic complexity of a unit
+}
 int calcCyclomaticComplexity(Statement impl) {
     int result = 1;
     visit (impl) {
@@ -24,6 +27,9 @@ int calcCyclomaticComplexity(Statement impl) {
     return result;
 }
 
+@doc{
+  function that calculates the size of a unit
+}
 int calcStatementsSize(Statement impl){
 	list[str] lines = readFileLines(impl.src);
 	lines = removeNonCodeFromText(lines);
@@ -31,6 +37,9 @@ int calcStatementsSize(Statement impl){
 	return size(lines);
 }
 
+@doc{
+  function that calculates the LLOC of a project. Accepts an M3 model of a project
+}
 int calculateLocVolume(M3 model){
 	int totalLines = 0;
 	
@@ -42,12 +51,3 @@ int calculateLocVolume(M3 model){
 	}
 	return totalLines;
 }
-
-/*public int countIf(Statement d) {
-   int count = 0;
-   visit(d) {
-      case \if(_,_): count=count+1;
-      case \if(_,_,_): count=count+1;
-   } 
-   return count;
-}*/

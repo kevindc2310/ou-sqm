@@ -35,6 +35,9 @@ import lang::json::IO;
   ```
 }
 
+@doc{
+  function that generates class dependencies of a project and save the result to disk
+}
 public void generateClassDependencies(loc project){
   M3 m = createM3FromEclipseProject(project);
   edges = [edge("<to>", "<from>") | <from,to> <- m@typeDependency ];  

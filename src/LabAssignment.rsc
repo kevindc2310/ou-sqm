@@ -26,19 +26,21 @@ import visual::ClassDependencies;
 
 map[int, str] scoreStrings = (0:"--",1:"-",2:"o",3:"+",4:"++");
 
-//loc project = |project://smallsql0/|;
-loc project = |project://smallsql0.21_src.zip_expanded|;
-//loc project = |project://hsqldb|;
+tuple[str name, loc location] Project = <"SmallSQL",|project://smallsql0.21_src.zip_expanded|>;
+//tuple[str name, loc location] Project = <"HSQL DB",|project://hsqldb|>;
 
+@doc{
+  function that analyses the project declared above
+}
 public void runAnalysis(){
-	println("SmallSQL");
+	println(Project.name);
 	//println("HSQLDB");
 	println("----");
 		
-    volumeScore = calculateVolume(project);
-    unitSizeScore = calculateUnitSize(project);
-    complexityScore = calculateCc(project);
-    duplicationScore = calculateDuplication(6, project);
+    volumeScore = calculateVolume(Project.location);
+    unitSizeScore = calculateUnitSize(Project.location);
+    complexityScore = calculateCc(Project.location);
+    duplicationScore = calculateDuplication(6, Project.location);
     //calculateUnitTestCoverage(project);
     
     println();

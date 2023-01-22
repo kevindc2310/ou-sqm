@@ -5,6 +5,9 @@ import vis::Render;
 import util::Math;
 import IO;
 
+@doc{
+  function that generate a bar diagram for the unit size and complexity metrics
+}
 public void drawGraphic(str method, real simplePercentage, real moderatePercentage, real highPercentage, real veryHighPercentage ){
 	list[Figure] boxes=[];
 	int width=200;

@@ -11,6 +11,9 @@ import lang::json::IO;
 import visual::StackedBar;
 import visual::UnitSizeComplexityRelation;
 
+@doc{
+  function that calculates the cyclomatic complexity score of a project, returns a score between 0-4
+}
 public int calculateCc(loc project){
 	M3 model = createM3FromEclipseProject(project);
     allUnits = getUnits(project);

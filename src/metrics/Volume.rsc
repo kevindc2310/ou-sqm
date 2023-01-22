@@ -4,6 +4,9 @@ import lang::java::jdt::m3::Core;
 import util::Calculator;
 import IO;
 
+@doc{
+  function that calculates the volume score of a project, returns a score between 0-4
+}
 public int calculateVolume(loc project){
 	M3 model = createM3FromEclipseProject(project);
 	

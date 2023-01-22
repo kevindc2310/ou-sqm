@@ -8,6 +8,9 @@ import IO;
 import util::String;
 import util::Math;
 
+@doc{
+  function that calculates the duplication percentage of a project. Pass the blocksize parameter to compare blocks. SIG recommendation is 6
+}
 public int calculateDuplication(int blockSize, loc project){
 	M3 model = createM3FromEclipseProject(project);
 	map[str, int] duplicationMap = ();

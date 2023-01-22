@@ -11,6 +11,9 @@ import Set;
 import util::Math;
 import visual::StackedBar;
 
+@doc{
+  function that calculates unit size score of a project, returns a score between 0-4
+}
 public int calculateUnitSize(loc project){
 	set[loc] files = getJavaFiles(project);
 	println("Aantal java files: <size(files)>");
