@@ -23,7 +23,7 @@ The visualizations of these metrics will automatically calculated when running t
 ![image](https://user-images.githubusercontent.com/25271716/213926222-5cda0ac5-787a-48cf-a597-05f4e6dae1bd.png)
 
 #### Unit size and complexity scatter chart
-This chart displays the relations between unit sizes and their complexity. The data for this chart is genereted while running the analysis. You can find it under src/output/complexitysizes.json. In order to display the graph, enter the following lines of code in the Rascal shell:
+This chart displays the relations between unit sizes and their complexity. The data for this chart is generated while running the analysis. You can find it under src/output/complexitysizes.json. In order to display the graph, enter the following lines of code in the Rascal shell:
 ```
   import visual::UnitSizeComplexityRelation;
   import lang::json::IO;
