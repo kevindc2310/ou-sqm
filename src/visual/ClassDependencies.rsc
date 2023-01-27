@@ -30,6 +30,7 @@ import lang::json::IO;
 @doc{
   ```rascal-shell
     import visual::ClassDependencies;
+    import lang::json::IO;
     list[Dependency] dependencyGraphData = readJSON(#list[Dependency], |project://MyRascal/src/output/dependencies.json|);
     makeDependencyVisualisation(dependencyGraphData);
   ```
